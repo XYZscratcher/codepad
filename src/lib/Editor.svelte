@@ -1,17 +1,23 @@
 <script>
+  import { invoke } from "@tauri-apps/api/tauri";
+  let code = "";
 </script>
 
-
-<textarea class="Editor" />
-
+<textarea
+  class="Editor"
+  id="main"
+  bind:value={code}
+  on:input={() => {
+    invoke("save", { code });
+  }}
+/>
 
 <style>
   .Editor {
     display: block;
-    grid-column: 2/24;
-    grid-row: 2/24;
 
-    font-family: "Maple Mono","Fira Code", consolas, "Courier New", Courier, monospace;
+    font-family: "Maple Mono", "Fira Code", consolas, "Courier New", Courier,
+      monospace;
     font-size: 1rem;
 
     outline: none;

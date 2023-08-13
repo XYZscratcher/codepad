@@ -4,11 +4,11 @@
 
   import "./styles.css";
 
-  let code = "";
-  let startEdit = false;
+  
+  let startEdit = true;
 </script>
 
-<main class="container">
+<div class="container">
   <nav style="grid-column: 1 / 24;grid-row: 1 / 2;background:lightblue">
     nav
   </nav>
@@ -19,11 +19,11 @@
     Toolbar
   </div>
   {#if startEdit}
-    <Editor bind:value={code} on:input={() => {}} />
+    <Editor />
   {:else}
     <Home />
   {/if}
-</main>
+</div>
 
 <style>
 </style>
