@@ -20,7 +20,7 @@ body {
 
 #main {
   grid-column: 2/24;
-  grid-row: 2/24;
+  grid-row: 2/36;
 }
 
 .container {
@@ -39,8 +39,8 @@ body {
       "c b b" 40px
       "c b b" 40px / 1fr 1fr 1fr; */
   grid-template-columns: repeat(23, 1fr);
-  grid-template-rows: repeat(23, 1fr);
-  gap: .3em;
+  grid-template-rows: repeat(35, 1fr);
+  gap: .0em;
   justify-content: center;
   text-align: center;
 }

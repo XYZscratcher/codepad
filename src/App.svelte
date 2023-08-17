@@ -1,29 +1,59 @@
 <script>
+  import { listen } from "@tauri-apps/api/event";
+  //import {} from "@tauri-apps/plugin-fs"
   import Editor from "./lib/Editor.svelte";
   import Home from "./lib/Home.svelte";
 
   import "./styles.css";
 
-  
-  let startEdit = true;
+  let startEdit = false;
+  let fileInfo = {};
+  listen("open_file", ({ payload }) => {
+    console.log(payload);
+    startEdit = true;
+    fileInfo = payload;
+  });
 </script>
 
 <div class="container">
-  <nav style="grid-column: 1 / 24;grid-row: 1 / 2;background:lightblue">
-    nav
+  <nav>
+    <ul>
+      {#each ["文件", "编辑"] as item}
+        <li>{item}</li>
+      {/each}
+    </ul>
   </nav>
   <div
     class="toolbar"
-    style=" grid-column: 1 / 2;grid-row: 1 / 24;background:lightgreen"
+    style=" grid-column: 1 / 2;grid-row: 2 / 36;background:lightgreen"
   >
     Toolbar
   </div>
   {#if startEdit}
-    <Editor />
+    <Editor file={fileInfo} />
   {:else}
     <Home />
   {/if}
 </div>
 
 <style>
+  nav {
+    grid-column: 1 / 24;
+    grid-row: 1 / 2;
+    background: lightblue;
+
+    display: inline-flex;
+    
+    flex-direction: row;
+    line-height: 0;
+    font-size: 1rem;
+  }
+  nav > ul {
+    margin-left: -1rem;
+  }
+  nav > ul > li {
+    display: inline;
+    flex: auto;
+    margin-right: 1rem;
+  }
 </style>
