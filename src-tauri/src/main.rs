@@ -1,6 +1,6 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-use std::env::{args, args_os};
+use std::env::args;
 use std::fs::{self, File};
 use std::io::ErrorKind;
 use tauri::Manager;
@@ -21,21 +21,16 @@ fn read_file(path: &str) -> Result<String, String> {
         }))
     }
 }
+#[tauri::command]
+fn get_args()->Vec<String>{
+    args().collect()
+}
 
 fn main() {
     tauri::Builder::default()
-        .setup(|app| {
-            println!("{:?}", args_os().collect::<Vec<_>>());
-            let a=app.windows();
-            for i in a.into_keys() { println!("{i}")}
-            for i in app.windows().into_values() {
-                i.emit("args", args().collect::<Vec<_>>())?;
-            }
-            Ok(())
-        })
         .plugin(tauri_plugin_dialog::init())
         //.plugin(tauri_plugin_fs::init())
-        .invoke_handler(tauri::generate_handler![save, read_file])
+        .invoke_handler(tauri::generate_handler![save, read_file,get_args])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

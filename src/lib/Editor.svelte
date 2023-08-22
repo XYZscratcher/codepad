@@ -31,6 +31,7 @@
     }); //TODO:
   onMount(() => {
     editor.focus();
+    
     editor.addEventListener("scroll", () => {
       line_number.scrollTop = editor.scrollTop;
     });
@@ -52,6 +53,7 @@
     html=c.replace(/<pre .+?>/,"").replace(/<\/pre>/,"").replace(/<code>/,"")
   })();*/ //TODO:
   $: lines = html.replaceAll("<div><br></div>","<br>").replaceAll("</div>", "").replaceAll("<div>","<br>").split("<br>");
+  console.log(lines);
   console.log(file.size);
 </script>
 

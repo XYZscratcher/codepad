@@ -5,24 +5,30 @@
   import Home from "./lib/Home.svelte";
 
   import "./styles.css";
+  import { invoke } from "@tauri-apps/api";
 
   let startEdit = false;
   let fileInfo = {};
-  
-  listen("args", (e) => {
+
+  /*listen("args", (e) => {
     const {payload}=e;
     console.log("args:",payload);
     console.log(e);
     startEdit = true;
     fileInfo={path: payload[0]}
-  })
+  })*/
+  invoke("get_args").then((args) => {
+    console.log("args:", args);
+    if (args.length > 1) {
+      startEdit = true;
+      fileInfo = { path: args[1] };
+    }
+  });
   listen("open_file", ({ payload }) => {
     console.log(payload);
     startEdit = true;
     fileInfo = payload;
   });
-  
-  
 </script>
 
 <div class="container">
@@ -31,7 +37,8 @@
       {#each ["文件", "编辑"] as item}
         <li>{item}</li>
       {/each}
-      <li on:click={()=>location.reload()}>回到主页</li><!--仅为调试方便使用-->
+      <li on:click={() => location.reload()}>回到主页</li>
+      <!--仅为调试方便使用-->
     </ul>
   </nav>
   <div
@@ -54,7 +61,7 @@
     background: lightblue;
 
     display: inline-flex;
-    
+
     flex-direction: row;
     line-height: 0;
     font-size: 1rem;
