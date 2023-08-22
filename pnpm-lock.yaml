@@ -11,6 +11,12 @@ dependencies:
   '@tauri-apps/plugin-dialog':
     specifier: 2.0.0-alpha.0
     version: 2.0.0-alpha.0
+  prettier:
+    specifier: ^3.0.2
+    version: 3.0.2
+  shikiji:
+    specifier: ^0.5.0
+    version: 0.5.0
 
 devDependencies:
   '@sveltejs/vite-plugin-svelte':
@@ -2554,6 +2560,12 @@ packages:
       source-map-js: 1.0.2
     dev: true
 
+  /prettier@3.0.2:
+    resolution: {integrity: sha512-o2YR9qtniXvwEZlOKbveKfDQVyqxbEIWn48Z8m3ZJjBjcCmUy3xZGIv+7AkaeuaTr6yPXJjwv07ZWlsWbEy1rQ==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: false
+
   /promise.allsettled@1.0.6:
     resolution: {integrity: sha512-22wJUOD3zswWFqgwjNHa1965LvqTX87WPu/lreY2KSd7SVcERfuZ4GfUaOnJNnvtoIv2yXT/W00YIGMetXtFXg==}
     engines: {node: '>= 0.4'}
@@ -2841,6 +2853,10 @@ packages:
       interpret: 1.4.0
       rechoir: 0.6.2
     dev: true
+
+  /shikiji@0.5.0:
+    resolution: {integrity: sha512-3GEA5UapFEFwfwv97iA0uo63L89MX3G2CGKPmVxBGCa44sNtlCZJ1W+hajao2s526Eexxt25k9bC+DGBbNvJOA==}
+    dev: false
 
   /side-channel@1.0.4:
     resolution: {integrity: sha512-q5XPytqFEIKHkGdiMIrY10mvLRvnQh42/+GoBlFW3b2LXLE2xxJpZFdm94we0BaoV3RwJyGqg5wS7epxTv0Zvw==}

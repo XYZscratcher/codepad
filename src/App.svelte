@@ -8,11 +8,21 @@
 
   let startEdit = false;
   let fileInfo = {};
+  
+  listen("args", (e) => {
+    const {payload}=e;
+    console.log("args:",payload);
+    console.log(e);
+    startEdit = true;
+    fileInfo={path: payload[0]}
+  })
   listen("open_file", ({ payload }) => {
     console.log(payload);
     startEdit = true;
     fileInfo = payload;
   });
+  
+  
 </script>
 
 <div class="container">
@@ -21,6 +31,7 @@
       {#each ["文件", "编辑"] as item}
         <li>{item}</li>
       {/each}
+      <li on:click={()=>location.reload()}>回到主页</li><!--仅为调试方便使用-->
     </ul>
   </nav>
   <div
