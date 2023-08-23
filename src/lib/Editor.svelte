@@ -3,9 +3,7 @@
   import { onMount, beforeUpdate, afterUpdate } from "svelte";
   //import { format } from "prettier";
   import { invoke } from "@tauri-apps/api/tauri";
-  //import { argv } from "node:process";
-  //import { getHighlighter } from "shikiji";
-
+  
   //let code = ""; /*,html = ""*/
   let editor,
     line_number,
@@ -15,11 +13,6 @@
   let lines = 1;
   invoke("read_file", { path: file.path })
     .then((v) => {
-      /*if (v === "Invalid data") {
-      //TODO:
-      errorInfo = "文件的内容不是有效的 UTF-8，无法打开文件。";
-      error = true;
-    } else {*/
       html = v.replaceAll("<","&lt;").replaceAll(">","&gt;")
       //}
     })
@@ -37,7 +30,6 @@
     editor.addEventListener("scroll", () => {
       line_number.scrollTop = editor.scrollTop;
     });
-    //let lines=html.replaceAll("<div><br></div>","\n").replaceAll("<br>","\n").split("\n")
   });
 
   /*(async () => {
@@ -62,8 +54,8 @@
     .split("\n")
   $: lines = code.length;
 
-  console.log(lines);
-  console.log(file.size);
+  //console.log(lines);
+  //console.log(file.size);
 </script>
 
 <div id="main" class="wrapper">
