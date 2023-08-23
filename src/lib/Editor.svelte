@@ -20,7 +20,7 @@
       errorInfo = "文件的内容不是有效的 UTF-8，无法打开文件。";
       error = true;
     } else {*/
-      html = v;
+      html = v.replaceAll("<","&lt;").replaceAll(">","&gt;")
       //}
     })
     .catch((e) => {
