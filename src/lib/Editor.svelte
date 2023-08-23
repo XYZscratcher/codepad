@@ -1,16 +1,18 @@
 <script>
   export let file;
-  import { onMount } from "svelte";
+  import { onMount, beforeUpdate, afterUpdate } from "svelte";
   //import { format } from "prettier";
   import { invoke } from "@tauri-apps/api/tauri";
   //import { argv } from "node:process";
   //import { getHighlighter } from "shikiji";
 
-  let code = ""; /*,html = ""*/
-  let editor, line_number,html="";
+  //let code = ""; /*,html = ""*/
+  let editor,
+    line_number,
+    html = "";
   let error = false,
     errorInfo = "";
-
+  let lines = 1;
   invoke("read_file", { path: file.path })
     .then((v) => {
       /*if (v === "Invalid data") {
@@ -18,25 +20,26 @@
       errorInfo = "文件的内容不是有效的 UTF-8，无法打开文件。";
       error = true;
     } else {*/
-      code = v;
+      html = v;
       //}
     })
     .catch((e) => {
       error = true;
       if (e === "Invalid data") {
         errorInfo = "文件的内容不是有效的 UTF-8，无法打开文件。";
-      }else{
-        errorInfo="其他错误"
+      } else {
+        errorInfo = "其他错误";
       }
     }); //TODO:
   onMount(() => {
     editor.focus();
-    
+
     editor.addEventListener("scroll", () => {
       line_number.scrollTop = editor.scrollTop;
     });
+    //let lines=html.replaceAll("<div><br></div>","\n").replaceAll("<br>","\n").split("\n")
   });
-  
+
   /*(async () => {
     const shiki = await getHighlighter({
       themes: ["nord"],
@@ -52,7 +55,13 @@
     });
     html=c.replace(/<pre .+?>/,"").replace(/<\/pre>/,"").replace(/<code>/,"")
   })();*/ //TODO:
-  $: lines = html.replaceAll("<div><br></div>","<br>").replaceAll("</div>", "").replaceAll("<div>","<br>").split("<br>");
+  
+  $: code=html
+    .replaceAll("<div><br></div>", "\n")
+    .replaceAll("<br>", "\n")
+    .split("\n")
+  $: lines = code.length;
+
   console.log(lines);
   console.log(file.size);
 </script>
@@ -60,7 +69,7 @@
 <div id="main" class="wrapper">
   {#if !error}
     <div id="line_number" bind:this={line_number}>
-      {#each lines as _, i}
+      {#each Array(lines) as _, i}
         <div class="line_number">{i + 1}</div>
       {/each}
     </div>
@@ -68,18 +77,11 @@
     <pre
       class="Editor"
       bind:this={editor}
-      bind:innerText={code}
+      
       bind:innerHTML={html}
       on:input={() => {
-        //html=code
         invoke("save", { code, path: file.path });
-        
-        /*format(code, { semi: true, filepath: file.path }).then((c) => {
-          code = c;
-          console.log(c);
-        });*/
       }}
-      
       contenteditable
     />
   {:else}
