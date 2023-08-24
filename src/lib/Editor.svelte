@@ -1,10 +1,16 @@
 <script>
   export let file;
+  //import {Linter} from "eslint";
   import { onMount, beforeUpdate, afterUpdate } from "svelte";
   //import { format } from "prettier";
   import { invoke } from "@tauri-apps/api/tauri";
-  
-  //let code = ""; /*,html = ""*/
+  const escapeHTML = (str) => {
+    return str
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;");
+  };
+  let code = ""; /*,html = ""*/
   let editor,
     line_number,
     html = "";
@@ -13,7 +19,7 @@
   let lines = 1;
   invoke("read_file", { path: file.path })
     .then((v) => {
-      html = v.replaceAll("<","&lt;").replaceAll(">","&gt;")
+      html = escapeHTML(v).replaceAll("\t", " ".repeat(4)); //将一个制表符替换为四个空格
       //}
     })
     .catch((e) => {
@@ -47,12 +53,12 @@
     });
     html=c.replace(/<pre .+?>/,"").replace(/<\/pre>/,"").replace(/<code>/,"")
   })();*/ //TODO:
-  
-  $: code=html
+
+  $: tmp = html
     .replaceAll("<div><br></div>", "\n")
     .replaceAll("<br>", "\n")
-    .split("\n")
-  $: lines = code.length;
+    .split("\n");
+  $: lines = tmp.length;
 
   //console.log(lines);
   //console.log(file.size);
@@ -69,8 +75,8 @@
     <pre
       class="Editor"
       bind:this={editor}
-      
       bind:innerHTML={html}
+      bind:innerText={code}
       on:input={() => {
         invoke("save", { code, path: file.path });
       }}
