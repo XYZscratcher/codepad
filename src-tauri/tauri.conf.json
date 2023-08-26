@@ -4,11 +4,11 @@
     "beforeDevCommand": "pnpm dev",
     "devPath": "http://localhost:1420",
     "distDir": "../dist",
-    "withGlobalTauri": false
+    "withGlobalTauri": true
   },
   "package": {
     "productName": "codepad",
-    "version": "0.0.0"
+    "version": "0.3.0"
   },
   "plugins": {
     "shell": {
@@ -29,7 +29,14 @@
       "targets": "all"
     },
     "security": {
-      "csp": null
+      "csp": null,
+      "dangerousRemoteDomainIpcAccess": [{
+        "domain": "tauri.localhost",
+        "windows": [
+          "main"
+        ],
+        "plugins":["dialog","event"]
+      }]
     },
     "windows": [
       {
